@@ -14,12 +14,11 @@ resource "aws_eks_cluster" "eks_cluster" {
   depends_on = [aws_iam_role_policy_attachment.eks_cluster_attachment]
 }
 
-resource "aws_eks_node_group" "eks_nodes" {
-  cluster_name    = aws_eks_cluster.eks_cluster.name
-  node_group_name = "${var.cluster_name}-nodes"
-  node_role_arn   = aws_iam_role.eks_nodes_role.arn
-  resource "aws_eks_fargate_profile" "my_fargate_profile" {
-  subnet_ids      = module.vpc.private_subnets  # Use as subnets privadas definidas no módulo VPC
+resource "aws_eks_fargate_profile" "my_fargate_profile" {
+  cluster_name            = module.eks.cluster_name
+  fargate_profile_name    = "my-fargate-profile"
+  pod_execution_role_arn  = module.eks.fargate_execution_role_arn
+  subnet_ids              = module.vpc.private_subnets  # Use as subnets privadas definidas no módulo VPC
 
   scaling_config {
     desired_size = var.desired_capacity
