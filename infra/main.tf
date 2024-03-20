@@ -26,8 +26,6 @@ module "eks" {
   cluster_name    = "my-eks-cluster"
   cluster_version = "1.28"
   vpc_id          = module.vpc.vpc_id
-  manage_aws_auth_configmap = true
-  aws_auth_users            = ["arn:aws:iam::767397811632:root"]
 
   tags = {
     Terraform   = "true"
